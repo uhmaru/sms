@@ -1,0 +1,66 @@
+<div class="chat-layout">
+  <div class="card">
+    <h2>New Message</h2>
+    <div *ngIf="errorMessage" class="error-banner">
+      {{ errorMessage }}
+      <button class="dismiss" (click)="errorMessage = null">×</button>
+    </div>
+
+    <label for="phone">Phone Number</label>
+    <input
+      id="phone"
+      [(ngModel)]="inputPhoneNumber"
+      placeholder="Phone Number"
+      type="text"
+    />
+
+    <label for="message">Message</label>
+    <textarea
+      id="message"
+      [(ngModel)]="newMessage"
+      [maxLength]="250"
+      placeholder="Type your message"
+      rows="5"
+    ></textarea>
+    <div class="char-counter">{{ newMessage?.length || 0 }}/250</div>
+
+    <div class="form-actions">
+      <button class="clear" (click)="clearMessage()">Clear</button>
+      <button class="submit" (click)="sendMessage()">Submit</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="chat-header">
+      <h2>Message History ({{ messages.length }})</h2>
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </div>
+
+    <div class="messages-container" #messagesContainer>
+      <div
+        *ngFor="let msg of messages"
+        class="message-entry"
+        [ngClass]="msg.direction"
+      >
+        <div class="meta">
+          <strong>{{ formatDisplayPhoneNumber(msg.phone_number) }}</strong>
+          <span>
+            {{ msg.created_at | date:'EEEE, dd-MMM-yy HH:mm:ss \'UTC\'' : 'UTC' }}
+          </span>
+        </div>
+
+        <div class="bubble">{{ msg.body }}</div>
+
+        <div class="meta-footer">
+          <div
+            class="status-label"
+            [ngClass]="{ 'failed': msg.status === 'failed' }"
+          >
+            {{ msg.status }}
+          </div>
+          <div class="char-label">{{ msg.body.length }}/250</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

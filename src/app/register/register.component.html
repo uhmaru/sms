@@ -1,0 +1,53 @@
+<div class="auth-container">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-header">
+      <h2>Register</h2>
+      <p>Create your account below.</p>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+        class="form-input"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <div class="password-wrapper">
+        <input
+          id="password"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Password"
+          class="form-input"
+        />
+        <span class="toggle-password" (click)="togglePasswordVisibility()">
+          <span class="btn">{{ showPassword ? 'Hide' : 'Show' }}</span>
+        </span>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <label for="confirm">Confirm Password</label>
+      <input
+        id="confirm"
+        [type]="showPassword ? 'text' : 'password'"
+        formControlName="password_confirmation"
+        placeholder="Confirm your password"
+        class="form-input"
+      />
+    </div>
+
+    <button type="submit" class="submit-btn">Register</button>
+
+    <p class="redirect">
+      Already have an account?
+      <a [routerLink]="['/login']"><strong>Login</strong></a>
+    </p>
+  </form>
+</div>
