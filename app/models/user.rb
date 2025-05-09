@@ -1,3 +1,5 @@
+include Mongoid::Document
+include Mongoid::Timestamps
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -12,4 +14,7 @@ class User
   field :reset_password_sent_at, type: Time
 
   field :remember_created_at,    type: Time
+
+  has_many :conversations, dependent: :destroy
+  has_many :messages, dependent: :destroy
 end

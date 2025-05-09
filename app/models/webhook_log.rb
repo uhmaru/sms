@@ -1,3 +1,5 @@
+include Mongoid::Document
+include Mongoid::Timestamps
 class WebhookLog
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -5,4 +7,6 @@ class WebhookLog
   field :status, type: String
   field :raw_data, type: Hash
   belongs_to :message
+
+  index({ twilio_sid: 1 }, { unique: true })
 end
