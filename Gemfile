@@ -32,6 +32,16 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
+gem 'mongoid', '~> 8.0'
+
+gem 'devise', '~> 4.9'
+
+gem 'twilio-ruby'
+
+gem 'bcrypt', '~> 3.1.7'
+
+gem 'mongo_session_store'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -41,6 +51,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem 'dotenv-rails'
+
+  gem 'rspec-rails', '~> 6.0.0'
+  gem 'factory_bot', '~> 6.4', '>= 6.4.6'
+  gem 'mocha', '~> 2.5.0'
 end
 
 group :development do
