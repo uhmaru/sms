@@ -199,7 +199,7 @@ GEM
     matrix (0.4.2)
     mini_mime (1.1.5)
     minitest (5.25.5)
-    mocha (2.5.0)
+    mocha (2.7.1)
       ruby2_keywords (>= 0.0.5)
     mongo (2.21.1)
       base64
@@ -490,7 +490,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   kamal
-  mocha (~> 2.5.0)
+  mocha (~> 2.7.1)
   mongo_session_store
   mongoid (~> 9.0)
   propshaft

@@ -61,7 +61,7 @@ group :development, :test do
   gem "rspec-rails", "~> 6.0.0"
   gem "rubocop-rspec"
   gem "factory_bot", "~> 6.4", ">= 6.4.6"
-  gem "mocha", "~> 2.5.0"
+  gem "mocha", "~> 2.7.1"
   gem "faker"
 
 end
