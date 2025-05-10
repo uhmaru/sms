@@ -14,7 +14,7 @@ require "timecop"
 require "webmock/rspec"
 
 WebMock.disable_net_connect!(allow_localhost: true)
-Sidekiq::Testing.fake!
+Sidekiq::Testing.inline!
 
 # Auto-load support files
 Dir[Rails.root.join("spec", "support", "**", "*.rb")].sort.each { |f| require f }
@@ -42,7 +42,6 @@ RSpec.configure do |config|
   config.include ActionView::Helpers::TextHelper
   config.include ActionView::Context
 
-  # Dry monads (if you're using them)
   config.include Dry::Monads[:result, :maybe] if defined?(Dry::Monads)
 
   # Match spec file location to behavior type (e.g. `:controller`, `:job`)

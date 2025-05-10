@@ -1,7 +1,5 @@
 # typed: strict
 
-# typed: strict
-
 class SendSmsJob
   include Sidekiq::Job
   extend T::Sig
@@ -13,12 +11,12 @@ class SendSmsJob
     message = Message.find(BSON::ObjectId.from_string(message_id))
 
     unless message.direction == "outbound"
-      log_event(:warn, "skipped", message.id.to_s, {reason: "Not outbound"})
+      log_event(:warn, "skipped", message.id.to_s, { reason: "Not outbound" })
       return
     end
 
     unless message.status == "pending"
-      log_event(:warn, "skipped", message.id.to_s, {reason: "Already processed"})
+      log_event(:warn, "skipped", message.id.to_s, { reason: "Already processed" })
       return
     end
 
@@ -28,11 +26,11 @@ class SendSmsJob
       message.update!(status: "sent")
       log_event(:info, "sent", message.id.to_s, {})
     else
-      log_event(:error, "failed", message.id.to_s, {errors: result.errors})
+      log_event(:error, "failed", message.id.to_s, { errors: result.errors })
     end
 
   rescue Mongoid::Errors::DocumentNotFound
-    log_event(:warn, "skipped", message_id, {reason: "Message not found"})
+    log_event(:warn, "skipped", message_id, { reason: "Message not found" })
   rescue => e
     log_event(:error, "crashed", message_id, {
       error_class: e.class.name,

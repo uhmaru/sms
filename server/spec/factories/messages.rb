@@ -1,11 +1,10 @@
-# spec/factories/messages.rb
 FactoryBot.define do
   factory :message do
     association :user
     association :conversation
 
-    sender_number    { "+15556667777" }
-    recipient_number { "+15558889999" }
+    sender_number    { "8885356542" }
+    recipient_number { "8777804236" }
     body             { "Hello from FactoryBot!" }
     direction        { "outbound" }
     status           { "pending" }

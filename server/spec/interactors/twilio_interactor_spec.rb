@@ -25,8 +25,10 @@ RSpec.describe TwilioInteractor do
       ).returns(twilio_response)
 
       response = described_class.new.send_sms(
+        from: '+18885356542',
         to: '+18777804236',
-        body: 'Test message'
+        body: 'Test message',
+        status_callback: TwilioInteractor::STATUS_CALLBACK
       )
 
       expect(response.sid).to eq('SM1234567890abcdef')

@@ -1,4 +1,8 @@
+# typed: strict
+
 class SendMessageService
+  extend T::Sig
+
   def initialize(
     user:,
     recipient_number:,
@@ -7,16 +11,18 @@ class SendMessageService
     job_class: SendSmsJob,
     result_class: ServiceResult
   )
-    @user = user
-    @recipient_number = recipient_number
-    @body = body
-    @delivery_token = delivery_token
-    @job_class = job_class
-    @result_class = result_class
+    @user = T.let(user, User)
+    @recipient_number = T.let(recipient_number, String)
+    @body = T.let(body, String)
+    @delivery_token = T.let(delivery_token, String)
+    @job_class = T.let(job_class, T.untyped)
+    @result_class = T.let(result_class, T.class_of(ServiceResult))
   end
 
+  sig { returns(ServiceResult) }
   def call
-    validate_message!
+    validation_result = validate_message!
+    return validation_result if validation_result.failure?
 
     begin
       conversation = @user.conversations.find_or_create_by!(contact_number: @recipient_number)
@@ -45,15 +51,20 @@ class SendMessageService
     end
   end
 
+  sig { returns(ServiceResult) }
   def validate_message!
     allowed = Rails.configuration.x.allowed_sms_recipients
-    unless allowed.include?(@recipient_number)
-      raise StandardError, "Recipient number #{@recipient_number} not allowed in this environment"
+
+    if !allowed.include?(@recipient_number)
+      return @result_class.failure([
+                                     "Recipient number #{@recipient_number} not allowed in this environment"
+                                   ])
     end
 
     if @recipient_number.blank? || @body.blank?
-      raise StandardError, "Missing phone number or body"
+      return @result_class.failure(["Missing phone number or body"])
     end
-  end
 
+    @result_class.success(nil)
   end
+end

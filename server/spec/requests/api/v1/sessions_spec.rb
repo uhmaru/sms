@@ -22,6 +22,7 @@ RSpec.describe TwilioInteractor do
     interactor = described_class.new
 
     response = interactor.send_sms(
+      from: "+18777804236",
       to: "+15556667777",
       body: "Test message"
     )

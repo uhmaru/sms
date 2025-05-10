@@ -5,7 +5,7 @@ require "sidekiq/testing"
 
 RSpec.describe SendMessageService do
   let(:user) { FactoryBot.create(:user) }
-  let(:recipient_number) { "+15555555555" }
+  let(:recipient_number) { "8777804236" }
   let(:body) { "Hello world" }
   let(:delivery_token) { SecureRandom.uuid }
 
@@ -25,7 +25,6 @@ RSpec.describe SendMessageService do
       user: user,
       recipient_number: recipient_number,
       body: body,
-      conversation_repo: ConversationRepository.new,
       delivery_token: delivery_token,
       job_class: job_class_spy
     )
@@ -33,7 +32,6 @@ RSpec.describe SendMessageService do
 
   describe "#call" do
     context "when the message is valid" do
-
       before do
         Rails.configuration.x.stubs(:allowed_sms_recipients).returns([recipient_number])
       end
@@ -62,10 +60,10 @@ RSpec.describe SendMessageService do
       end
 
       it "returns a failure and does not call the job class" do
-        expect {
-          send_message.call
-        }.to raise_error(StandardError, "Missing phone number or body")
+        result = send_message.call
 
+        expect(result).to be_failure
+        expect(result.errors).to include("Missing phone number or body")
         expect(job_class_spy.performed_with).to be_empty
       end
     end
@@ -75,14 +73,13 @@ RSpec.describe SendMessageService do
         Rails.configuration.x.stubs(:allowed_sms_recipients).returns([])
       end
 
-      it "raises an error and does not call the job class" do
-        expect {
-          send_message.call
-        }.to raise_error(StandardError, "Recipient number not allowed in this environment")
+      it "returns a failure and does not call the job class" do
+        result = send_message.call
 
+        expect(result).to be_failure
+        expect(result.errors.first).to match(/Recipient number .* not allowed/)
         expect(job_class_spy.performed_with).to be_empty
       end
     end
-
   end
 end

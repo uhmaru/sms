@@ -8,7 +8,7 @@ module Api
 
         render json: {
           success: true,
-          messages: messages.map { |msg| MessageSerializer.new(msg, current_user.id).as_json }
+          messages: messages.map { |msg| MessageSerializer.new(msg, current_user.id.to_s).as_json }
         }, status: :ok
       rescue => e
         render_internal_error(e)
@@ -25,7 +25,7 @@ module Api
         if result.success?
           render json: {
             success: true,
-            message: MessageSerializer.new(result.data, current_user.id).as_json
+            message: MessageSerializer.new(T.must(result.data), current_user.id.to_s).as_json
           }, status: :created
         else
           render_error_messages(result.errors)
@@ -41,7 +41,7 @@ module Api
         if message.update(update_status_params)
           render json: {
             success: true,
-            message: MessageSerializer.new(message, current_user.id).as_json
+            message: MessageSerializer.new(message, current_user.id.to_s).as_json
           }, status: :ok
         else
           render_error_messages(message.errors.full_messages)
@@ -61,20 +61,26 @@ module Api
       end
 
       def render_error_messages(errors)
-        render json: { success: false, errors: errors }, status: :unprocessable_entity
+        render json: {
+          success: false,
+          errors: errors
+        }, status: :unprocessable_entity
       end
 
       def render_not_found(message)
-        render json: { success: false, error: message }, status: :not_found
+        render json: {
+          success: false,
+          error: message
+        }, status: :not_found
       end
 
       def render_internal_error(error)
-        Rails.logger.error(error.message)
+        Rails.logger.error("[MessagesController] #{error.class}: #{error.message}")
         Rails.logger.error(error.backtrace.join("\n")) if error.backtrace
 
         render json: {
           success: false,
-          error: error.message || "An unexpected error occurred. Please try again."
+          error: "An unexpected error occurred. Please try again."
         }, status: :internal_server_error
       end
     end

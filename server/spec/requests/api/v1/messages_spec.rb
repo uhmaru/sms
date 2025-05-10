@@ -10,12 +10,38 @@ RSpec.describe "POST /api/v1/messages", type: :request do
   let(:valid_params) do
     {
       message: {
-        phone_number: "+15555555555",
+        phone_number: "8777804236",
         body: "Hello world",
         delivery_token: SecureRandom.uuid
       }
     }
   end
+
+  before do
+    stub_request(:post, /api.twilio.com/).to_return(
+      status: 201,
+      body: {
+        sid: "SM1234567890abcdef",
+        status: "queued"
+      }.to_json,
+      headers: { "Content-Type" => "application/json" }
+    )
+
+    stub_app_config(
+      TWILIO_TO_PHONE_NUMBER: "+18777804236",
+      TWILIO_FROM_PHONE_NUMBER: "+18885551234",
+      TWILIO_ACCOUNT_SID: "test_sid",
+      TWILIO_AUTH_TOKEN: "test_token"
+    )
+  end
+
+  def stub_app_config(overrides = {})
+    overrides.each do |key, value|
+      AppConfig.send(:remove_const, key) if AppConfig.const_defined?(key)
+      AppConfig.const_set(key, value)
+    end
+  end
+
 
 
   it "creates a message and returns 201" do
