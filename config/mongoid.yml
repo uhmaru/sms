@@ -1,14 +1,12 @@
 development:
   clients:
     default:
-      uri: mongodb://localhost:27017/sms_development
-  options:
-    use_activesupport_time_zone: true
+      uri: <%= ENV['MONGODB_URI_DEV'] %>
 
 test:
   clients:
     default:
-      uri: mongodb://localhost:27017/sms_test
+      uri: <%= ENV['MONGODB_URI_TEST'] %>
 
 production:
   clients:

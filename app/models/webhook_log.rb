@@ -1,5 +1,3 @@
-include Mongoid::Document
-include Mongoid::Timestamps
 class WebhookLog
   include Mongoid::Document
   include Mongoid::Timestamps

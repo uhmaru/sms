@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 7.1.3"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use the Puma web server [https://github.com/puma/puma]
@@ -17,9 +17,6 @@ gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
-
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
@@ -32,21 +29,23 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-gem 'mongoid', '~> 8.0'
+gem "mongoid", "~> 9.0"
 
-gem 'devise', '~> 4.9'
+gem "devise", "~> 4.9"
 
-gem 'twilio-ruby'
+gem "devise-jwt"
 
-gem 'bcrypt', '~> 3.1.7'
+gem "twilio-ruby"
 
-gem 'mongo_session_store'
+gem "bcrypt", "~> 3.1.7"
 
-gem 'sidekiq'
-gem 'redis'
-gem 'rack-cors'
-gem 'devise-jwt' # if going JWT route
-gem 'sorbet-runtime'
+gem "mongo_session_store"
+
+gem "sidekiq"
+gem "redis"
+gem "rack-cors"
+gem "dotenv-rails"
+gem "sorbet-runtime"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -56,27 +55,30 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
+  gem "spring"
+  gem "rspec-rails", "~> 6.0.0"
+  gem "rubocop-rspec"
+  gem "factory_bot", "~> 6.4", ">= 6.4.6"
+  gem "mocha", "~> 2.5.0"
+  gem "faker"
 
-  gem 'dotenv-rails'
-
-  gem 'rspec-rails', '~> 6.0.0'
-  gem 'rubocop-rspec'
-  gem 'factory_bot', '~> 6.4', '>= 6.4.6'
-  gem 'mocha', '~> 2.5.0'
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-
-  gem 'sorbet'
-  gem 'tapioca'
-  gem 'sorbet-runtime'
+  gem "sorbet"
+  gem "tapioca"
 end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webmock"
+  gem "timecop", "~> 0.9.8"
+  gem "shoulda-matchers"
+  gem 'database_cleaner-mongoid'
 end

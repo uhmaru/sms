@@ -1,15 +1,31 @@
-Rails.application.routes.draw do
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+require "sidekiq/web"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+Rails.application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
+  end
+
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  devise_for :users,
+             path: "api/v1",
+             path_names: {
+               sign_in: "login",
+               sign_out: "logout"
+             },
+             controllers: {
+               sessions: "api/v1/sessions",
+               registrations: "api/v1/registrations"
+             },
+             defaults: { format: :json }
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :messages, only: [:create, :index] do
+        patch :update_status, on: :member
+      end
+
+      post "/twilio/status_callback", to: "twilio_webhooks#create"
+    end
+  end
 end

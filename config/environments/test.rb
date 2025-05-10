@@ -47,4 +47,6 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
+
+  config.x.allowed_sms_recipients = %w[+18777804236 +18885356542 18885356542 18777804236 8885356542 8777804236]
 end
