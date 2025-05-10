@@ -1,0 +1,39 @@
+<div class="auth-container">
+  <form class="auth-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-header">
+      <h2>Login</h2>
+      <p>Welcome back! Enter your credentials below.</p>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+        class="form-input"
+      />
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <div class="password-wrapper">
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Password"
+          class="form-input"
+        />
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Login</button>
+
+    <p class="redirect">
+      Don’t have an account?
+      <a [routerLink]="['/register']"><strong>Register</strong></a>
+    </p>
+  </form>
+</div>
