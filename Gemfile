@@ -58,7 +58,7 @@ group :development, :test do
   gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
   gem "spring"
-  gem "rspec-rails", "~> 6.0.0"
+  gem "rspec-rails", "~> 7.1.1"
   gem "rubocop-rspec"
   gem "factory_bot", "~> 6.4", ">= 6.4.6"
   gem "mocha", "~> 2.5.0"
